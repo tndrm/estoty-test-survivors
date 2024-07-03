@@ -6,11 +6,12 @@ public class Enemy : MonoBehaviour
 	private float damage;
 	private float speed;
 	private Transform player;
-
+	private SpriteRenderer spriteRenderer;
 
 	private void Start()
 	{
-		player = GameObject.FindGameObjectWithTag("Player").transform;
+		player = ServiceLocator.Get<PlayerController>().transform;
+		spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
 	public void Initialize(float health, float damage, float speed)
@@ -29,8 +30,9 @@ public class Enemy : MonoBehaviour
 	{
 		if (player != null)
 		{
-			Vector3 direction = (player.position - transform.position).normalized;
-			transform.position += direction * speed * Time.deltaTime;
+			Vector3 direction = player.position - transform.position;
+			transform.position += direction.normalized * speed * Time.deltaTime;
+			spriteRenderer.flipX = direction.x < 0;
 		}
 	}
 
@@ -46,5 +48,10 @@ public class Enemy : MonoBehaviour
 	private void Die()
 	{
 		Destroy(gameObject);
+	}
+
+	public void Attack()
+	{
+		throw new System.NotImplementedException();
 	}
 }
