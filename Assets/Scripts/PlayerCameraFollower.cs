@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class PlayerCameraFollower : MonoBehaviour
 {
-	public float smoothSpeed = 0.125f;
-	public Vector3 offset;
+	[SerializeField] private Vector3 offset;
 
 	private Transform player;
 
@@ -13,14 +12,10 @@ public class PlayerCameraFollower : MonoBehaviour
 	}
 	private void Start()
 	{
-		player = ServiceLocator.Get<PlayerMoveController>().transform;
+		player = ServiceLocator.Get<PlayerController>().transform;
 	}
 	private void LateUpdate()
 	{
-		Vector3 desiredPosition = player.position + offset;
-
-		Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-
-		transform.position = smoothedPosition;
+		transform.position = player.position + offset;
 	}
 }
