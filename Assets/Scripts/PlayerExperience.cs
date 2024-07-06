@@ -16,9 +16,7 @@ public class PlayerExperience : MonoBehaviour
 	}
 	private void Start()
 	{
-
 		OnExperienceChanged?.Invoke(currentExperience);
-
 	}
 	public void AddExperience(int amount)
 	{
@@ -29,7 +27,6 @@ public class PlayerExperience : MonoBehaviour
 		{
 			LevelUp();
 		}
-		Debug.Log($"Player gained experience. Current experience: {currentExperience}");
 	}
 
 	private void LevelUp()

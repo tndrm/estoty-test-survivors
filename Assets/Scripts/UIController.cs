@@ -19,6 +19,8 @@ public class UIController : MonoBehaviour
 		enemyDeathCounter = ServiceLocator.Get<EnemyDeathCounter>();
 
 		healthSlider.maxValue = playerHealth.maxHealth;
+		UpdateHealthUI(playerHealth.currentHealth);
+
 		experienceSlider.maxValue = playerExperience.experienceToNextLevel;
 
 		playerHealth.OnHealthChanged += UpdateHealthUI;
