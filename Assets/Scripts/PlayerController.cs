@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 
 	private float inputHorizontal;
 	private float inputVertical;
+	private Animator animator;
 	private SpriteRenderer spriteRenderer;
 	private Rigidbody2D rb;
 
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
 		ServiceLocator.Register(this);
 		rb = GetComponent<Rigidbody2D>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
+		animator = GetComponent<Animator>();
 	}
 
 	void Update()
@@ -30,12 +32,14 @@ public class PlayerController : MonoBehaviour
 	private void Move()
 	{
 		Vector2 moveDirection = new Vector2(inputHorizontal, inputVertical);
+		animator.SetBool("Run", moveDirection != Vector2.zero);
 
 		moveDirection.Normalize();
 		if (moveDirection.x != 0)
 		{
 			spriteRenderer.flipX = moveDirection.x < 0;
 		}
+
 		rb.velocity = moveDirection * moveSpeed;
 	}
 }
