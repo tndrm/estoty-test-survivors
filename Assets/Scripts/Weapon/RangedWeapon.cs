@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RangedWeapon : MonoBehaviour, IWeapon, IReloadable, IAimWeapon
 {
-	[SerializeField] private Transform firePoint;	
+	[SerializeField] private Transform firePoint;
 
 	private float shootingInterval;
 	private GameObject bulletPrefab;
@@ -42,9 +42,11 @@ public class RangedWeapon : MonoBehaviour, IWeapon, IReloadable, IAimWeapon
 		Instantiate(bulletPrefab, firePoint.position, transform.rotation, transform);
 	}
 
-	public void Reload()
+	public bool Reload(int amount)
 	{
-		currentAmmo = maxAmmo;
+		bool isReloadble = maxAmmo - currentAmmo > 0;
+		currentAmmo += amount;
+		return isReloadble;
 	}
 
 	public void AimAndAttack(Transform target)

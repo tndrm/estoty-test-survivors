@@ -7,23 +7,23 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private string verticalAxis = "Vertical";
 	[SerializeField] private float moveSpeed = 5.0f;
 
-    private float inputHorizontal;
-    private float inputVertical;
+	private float inputHorizontal;
+	private float inputVertical;
 	private SpriteRenderer spriteRenderer;
-    private Rigidbody2D rb;
+	private Rigidbody2D rb;
 
 
 	private void Awake()
-    {
-        ServiceLocator.Register(this);
-        rb = GetComponent<Rigidbody2D>();
+	{
+		ServiceLocator.Register(this);
+		rb = GetComponent<Rigidbody2D>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
 	void Update()
-    {
-        inputHorizontal = SimpleInput.GetAxis(horizontalAxis);
-        inputVertical = SimpleInput.GetAxis(verticalAxis);
+	{
+		inputHorizontal = SimpleInput.GetAxis(horizontalAxis);
+		inputVertical = SimpleInput.GetAxis(verticalAxis);
 		Move();
 	}
 

@@ -7,10 +7,12 @@ public class Enemy : MonoBehaviour
 	private float speed;
 	private Transform player;
 	private SpriteRenderer spriteRenderer;
+	private LootDropSystem lootDropSystem;
 
 	private void Start()
 	{
 		player = ServiceLocator.Get<PlayerController>().transform;
+		lootDropSystem = ServiceLocator.Get<LootDropSystem>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
@@ -47,6 +49,7 @@ public class Enemy : MonoBehaviour
 
 	private void Die()
 	{
+		lootDropSystem.DropLoot(transform.position);
 		Destroy(gameObject);
 	}
 

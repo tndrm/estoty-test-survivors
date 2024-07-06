@@ -1,4 +1,4 @@
 public interface IReloadable
 {
-	void Reload();
+	bool Reload(int amount);
 }

@@ -12,8 +12,8 @@ public class PlayerWeapon : MonoBehaviour
 
 	private IWeapon leftWeapon;
 	private IWeapon rightWeapon;
-/*	private IReloadable leftReloadable;
-	private IReloadable rightReloadable;*/
+	private IReloadable leftReloadable;
+	private IReloadable rightReloadable;
 	private IAimWeapon leftAutoTargetWeapon;
 	private IAimWeapon rightAutoTargetWeapon;
 
@@ -29,7 +29,7 @@ public class PlayerWeapon : MonoBehaviour
 		GameObject leftWeaponObject = Instantiate(leftWeaponConfig.weaponPrefab, leftHandPosition.position, Quaternion.identity, transform);
 		leftWeapon = leftWeaponObject.GetComponent<IWeapon>();
 		leftWeapon.Initialize(leftWeaponConfig);
-		//leftReloadable = leftWeaponObject.GetComponent<IReloadable>();
+		leftReloadable = leftWeaponObject.GetComponent<IReloadable>();
 		leftAutoTargetWeapon = leftWeaponObject.GetComponent<IAimWeapon>();
 	}
 	private void SetRightWeapon()
@@ -37,7 +37,7 @@ public class PlayerWeapon : MonoBehaviour
 		GameObject rightWeaponObject = Instantiate(rightWeaponConfig.weaponPrefab, rightHandPosition.position, Quaternion.identity, transform);
 		rightWeapon = rightWeaponObject.GetComponent<IWeapon>();
 		rightWeapon.Initialize(rightWeaponConfig);
-		//rightReloadable = rightWeaponObject.GetComponent<IReloadable>();
+		rightReloadable = rightWeaponObject.GetComponent<IReloadable>();
 		rightAutoTargetWeapon = rightWeaponObject.GetComponent<IAimWeapon>();
 	}
 
@@ -47,8 +47,11 @@ public class PlayerWeapon : MonoBehaviour
 		Transform target = enemyFinder.FindClosestEnemy();
 		leftAutoTargetWeapon?.AimAndAttack(target);
 		rightAutoTargetWeapon?.AimAndAttack(target);
+	}
 
-/*		leftReloadable?.Reload();
-		rightReloadable?.Reload();*/
+	public void Reload(int amount)
+	{
+		bool? isReloaded = leftReloadable?.Reload(amount);
+		if (isReloaded == true) rightReloadable?.Reload(amount);
 	}
 }
