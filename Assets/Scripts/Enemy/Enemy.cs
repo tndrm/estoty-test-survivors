@@ -9,6 +9,9 @@ public class Enemy : MonoBehaviour
 	private SpriteRenderer spriteRenderer;
 	private LootDropSystem lootDropSystem;
 
+	public delegate void EnemyDeath();
+	public static event EnemyDeath OnEnemyDeath;
+
 	private void Start()
 	{
 		player = ServiceLocator.Get<PlayerController>().transform;
@@ -49,6 +52,8 @@ public class Enemy : MonoBehaviour
 
 	private void Die()
 	{
+		OnEnemyDeath?.Invoke();
+
 		lootDropSystem.DropLoot(transform.position);
 		Destroy(gameObject);
 	}

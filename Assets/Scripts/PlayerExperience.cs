@@ -2,12 +2,29 @@ using UnityEngine;
 
 public class PlayerExperience : MonoBehaviour
 {
-	public int currentExperience = 0;
-	public int experienceToNextLevel = 100;
+	private int currentExperience = 0;
+	public int experienceToNextLevel { get; private set; }
 
+	public delegate void ExperienceChanged(int currentExperience);
+	public event ExperienceChanged OnExperienceChanged;
+
+	private void Awake()
+	{
+		experienceToNextLevel = 100;
+
+		ServiceLocator.Register(this);
+	}
+	private void Start()
+	{
+
+		OnExperienceChanged?.Invoke(currentExperience);
+
+	}
 	public void AddExperience(int amount)
 	{
 		currentExperience += amount;
+		OnExperienceChanged?.Invoke(currentExperience);
+
 		if (currentExperience >= experienceToNextLevel)
 		{
 			LevelUp();
