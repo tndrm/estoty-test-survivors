@@ -13,12 +13,12 @@ public class EnemyDeathCounter : MonoBehaviour
 	}
 	private void OnEnable()
 	{
-		Enemy.OnEnemyDeath += HandleEnemyDeath;
+		EnemyDieState.OnEnemyDeath += HandleEnemyDeath;
 	}
 
 	private void OnDisable()
 	{
-		Enemy.OnEnemyDeath -= HandleEnemyDeath;
+		EnemyDieState.OnEnemyDeath -= HandleEnemyDeath;
 	}
 
 	private void HandleEnemyDeath()

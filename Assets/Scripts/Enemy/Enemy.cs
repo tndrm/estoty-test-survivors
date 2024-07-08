@@ -1,22 +1,34 @@
+using System.Xml;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+	[SerializeField] float enemyFadeDuration = 2f;
 	private float health;
 	private float damage;
 	private float speed;
 	private Transform player;
 	private SpriteRenderer spriteRenderer;
 	private LootDropSystem lootDropSystem;
+	private Animator animator;
 
-	public delegate void EnemyDeath();
-	public static event EnemyDeath OnEnemyDeath;
+	private IEnemyState currentState;
+
+	public Transform Player => player;
+	public SpriteRenderer SpriteRenderer => spriteRenderer;
+	public Animator Animator => animator;
+	public LootDropSystem LootDropSystem => lootDropSystem;
+	public float Speed => speed;
+	public float EnemyFadeDuration => enemyFadeDuration;
 
 	private void Start()
 	{
 		player = ServiceLocator.Get<PlayerController>().transform;
 		lootDropSystem = ServiceLocator.Get<LootDropSystem>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
+		animator = GetComponent<Animator>();
+
+		SetState(new EnemyChaseState());
 	}
 
 	public void Initialize(float health, float damage, float speed)
@@ -28,38 +40,31 @@ public class Enemy : MonoBehaviour
 
 	private void Update()
 	{
-		ChasePlayer();
+		currentState?.UpdateState();
 	}
 
-	private void ChasePlayer()
+	public void SetState(IEnemyState newState)
 	{
-		if (player != null)
-		{
-			Vector3 direction = player.position - transform.position;
-			transform.position += direction.normalized * speed * Time.deltaTime;
-			spriteRenderer.flipX = direction.x < 0;
-		}
+		currentState?.ExitState();
+		currentState = newState;
+		currentState.EnterState(this);
 	}
 
 	public void TakeDamage(float amount)
 	{
-		health -= amount;
+		if (currentState is EnemyDieState) return;
+
+			health -= amount;
 		if (health <= 0)
 		{
-			Die();
+			SetState(new EnemyDieState());
 		}
-	}
-
-	private void Die()
-	{
-		OnEnemyDeath?.Invoke();
-
-		lootDropSystem.DropLoot(transform.position);
-		Destroy(gameObject);
 	}
 
 	public void Attack()
 	{
+		if (currentState is EnemyDieState) return;
+
 		throw new System.NotImplementedException();
 	}
 }

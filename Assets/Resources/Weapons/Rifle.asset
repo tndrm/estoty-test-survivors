@@ -18,4 +18,4 @@ MonoBehaviour:
   weaponPrefab: {fileID: 8780698055021964743, guid: e28c22e53a338bf49b5966e612b80e2a, type: 3}
   bulletPrefab: {fileID: 5407380772324611893, guid: 0a65253770272464889a04eddb449363, type: 3}
   attackRange: 20
-  attackInterval: 1
+  attackInterval: 0.2
