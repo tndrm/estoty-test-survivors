@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 2
   damage: 2
+  attackInterval: 1
   speed: 2
   prefab: {fileID: -7413786893463713143, guid: 1b10b198cafc20c4da7e6d47846d9c89, type: 3}

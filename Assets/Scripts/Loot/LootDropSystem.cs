@@ -16,9 +16,12 @@ public class LootDropSystem : MonoBehaviour
 	public void DropLoots(Vector3 position)
 	{
 		spawnLoot(experienceGem, position);
+		if (otherLoots.Count > 0)
+		{
+			LootItemConfig randomLootConfig = otherLoots[Random.Range(0, otherLoots.Count - 1)];
+			spawnLoot(randomLootConfig, position);
+		}
 
-		LootItemConfig randomLootConfig = otherLoots[Random.Range(0, otherLoots.Count - 1)];
-		spawnLoot(randomLootConfig, position);
 	}
 
 	private void spawnLoot(LootItemConfig loot, Vector3 position)

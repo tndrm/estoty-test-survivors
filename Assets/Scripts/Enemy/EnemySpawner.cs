@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -9,7 +10,6 @@ public class EnemySpawner : MonoBehaviour
 
 	private float nextSpawnTime = 0f;
 	private Camera playerCamera;
-	private EnemyFactory enemyFactory;
 	private List<Enemy> spawnedEnemies;
 
 	private void Start()
@@ -17,7 +17,6 @@ public class EnemySpawner : MonoBehaviour
 		playerCamera = ServiceLocator.Get<PlayerCameraFollower>().GetComponent<Camera>();
 
 		spawnedEnemies = new List<Enemy>();
-		enemyFactory = new EnemyFactory();
 	}
 
 
@@ -36,7 +35,8 @@ public class EnemySpawner : MonoBehaviour
 		if (playerCamera == null) return;
 		Vector3 spawnPosition = GetRandomPositionOutsideCamera();
 		EnemyConfig randomEnemyStats = enemyTypes[Random.Range(0, enemyTypes.Length)];
-		spawnedEnemies.Add(enemyFactory.CreateEnemy(randomEnemyStats, spawnPosition, transform));
+		Enemy enemy = GameObject.Instantiate(randomEnemyStats.prefab, spawnPosition, Quaternion.identity, transform);
+		enemy.Initialize(randomEnemyStats);
 	}
 
 	private Vector3 GetRandomPositionOutsideCamera()

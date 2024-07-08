@@ -1,25 +1,18 @@
-using System.Xml;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-	[SerializeField] float enemyFadeDuration = 2f;
-	private float health;
-	private float damage;
-	private float speed;
-	private Transform player;
-	private SpriteRenderer spriteRenderer;
-	private LootDropSystem lootDropSystem;
-	private Animator animator;
+	public float enemyFadeDuration = 2f;
+	public int _health { get; private set; }
+	public int _damage { get; private set; }
+	public float _speed { get; private set; }
+	public float _attackInterval { get; private set; }
+	public Transform player { get; private set; }
+	public SpriteRenderer spriteRenderer { get; private set; }
+	public LootDropSystem lootDropSystem { get; private set; }
+	public Animator animator { get; private set; }
 
 	private IEnemyState currentState;
-
-	public Transform Player => player;
-	public SpriteRenderer SpriteRenderer => spriteRenderer;
-	public Animator Animator => animator;
-	public LootDropSystem LootDropSystem => lootDropSystem;
-	public float Speed => speed;
-	public float EnemyFadeDuration => enemyFadeDuration;
 
 	private void Start()
 	{
@@ -31,11 +24,12 @@ public class Enemy : MonoBehaviour
 		SetState(new EnemyChaseState());
 	}
 
-	public void Initialize(float health, float damage, float speed)
+	public void Initialize(EnemyConfig config)
 	{
-		this.health = health;
-		this.damage = damage;
-		this.speed = speed;
+		_health = config.health;
+		_damage = config.damage;
+		_speed = config.speed;
+		_attackInterval = config.attackInterval;
 	}
 
 	private void Update()
@@ -50,21 +44,26 @@ public class Enemy : MonoBehaviour
 		currentState.EnterState(this);
 	}
 
-	public void TakeDamage(float amount)
+	public void TakeDamage(int amount)
 	{
 		if (currentState is EnemyDieState) return;
 
-			health -= amount;
-		if (health <= 0)
+		_health -= amount;
+		if (_health <= 0)
 		{
 			SetState(new EnemyDieState());
 		}
 	}
 
-	public void Attack()
+	private void OnCollisionEnter2D(Collision2D collision)
 	{
 		if (currentState is EnemyDieState) return;
+		if (collision.gameObject.CompareTag("Player")) SetState(new EnemyAttackState());
+	}
 
-		throw new System.NotImplementedException();
+	private void OnCollisionExit2D(Collision2D collision)
+	{
+		if (currentState is EnemyDieState) return;
+		if (collision.gameObject.CompareTag("Player")) SetState(new EnemyChaseState());
 	}
 }

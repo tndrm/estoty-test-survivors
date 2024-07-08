@@ -8,7 +8,7 @@ public class EnemyChaseState : IEnemyState
 	public void EnterState(Enemy enemy)
 	{
 		this.enemy = enemy;
-		this.player = enemy.Player;
+		this.player = enemy.player;
 	}
 
 	public void UpdateState()
@@ -16,13 +16,9 @@ public class EnemyChaseState : IEnemyState
 		if (player != null)
 		{
 			Vector3 direction = player.position - enemy.transform.position;
-			enemy.transform.position += direction.normalized * enemy.Speed * Time.deltaTime;
-			enemy.SpriteRenderer.flipX = direction.x < 0;
+			enemy.transform.position += direction.normalized * enemy._speed * Time.deltaTime;
+			enemy.spriteRenderer.flipX = direction.x < 0;
 		}
 	}
-
-	public void ExitState()
-	{
-		// Any cleanup when exiting the state
-	}
+	public void ExitState() { }
 }
