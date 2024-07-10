@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -16,7 +17,7 @@ public class Enemy : MonoBehaviour
 
 	private void Start()
 	{
-		player = ServiceLocator.Get<PlayerController>().transform;
+		player = ServiceLocator.Get<PlayerMoveController>().transform;
 		lootDropSystem = ServiceLocator.Get<LootDropSystem>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		animator = GetComponent<Animator>();

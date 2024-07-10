@@ -1,22 +1,24 @@
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-	[SerializeField] private EnemyConfig[] enemyTypes;
-	[SerializeField] private float spawnRate = 5f;
 	[SerializeField] private float spawnPadding = 1f;
+	private List<EnemyConfig> enemyTypes;
+
+	private float spawnRate;
+	private float enemySpawnIncreaseCoefficient;
 
 	private float nextSpawnTime = 0f;
 	private Camera playerCamera;
-	private List<Enemy> spawnedEnemies;
 
 	private void Start()
 	{
-		playerCamera = ServiceLocator.Get<PlayerCameraFollower>().GetComponent<Camera>();
-
-		spawnedEnemies = new List<Enemy>();
+		playerCamera = Camera.main;
+		GameplayEntryPoint gameEntryPoint = ServiceLocator.Get<GameplayEntryPoint>();
+		spawnRate = gameEntryPoint.currentLevelConfig.enemySpawnRate;
+		enemySpawnIncreaseCoefficient = gameEntryPoint.currentLevelConfig.enemySpawnIncreaseCoefficient;
+		enemyTypes = gameEntryPoint.currentLevelConfig.enemies;
 	}
 
 
@@ -26,7 +28,7 @@ public class EnemySpawner : MonoBehaviour
 		{
 			SpawnEnemy();
 			nextSpawnTime = Time.time + spawnRate;
-			spawnRate *= 0.95f;
+			spawnRate *= enemySpawnIncreaseCoefficient;
 		}
 	}
 
@@ -34,7 +36,7 @@ public class EnemySpawner : MonoBehaviour
 	{
 		if (playerCamera == null) return;
 		Vector3 spawnPosition = GetRandomPositionOutsideCamera();
-		EnemyConfig randomEnemyStats = enemyTypes[Random.Range(0, enemyTypes.Length)];
+		EnemyConfig randomEnemyStats = enemyTypes[Random.Range(0, enemyTypes.Count)];
 		Enemy enemy = GameObject.Instantiate(randomEnemyStats.prefab, spawnPosition, Quaternion.identity, transform);
 		enemy.Initialize(randomEnemyStats);
 	}

@@ -9,7 +9,7 @@ public class RangedWeapon : MonoBehaviour, IWeapon, IReloadable, IAimWeapon
 	private float nextFireTime = 0;
 	private int currentAmmo;
 	private int maxAmmo;
-
+	private bool isReloaded = true;
 	public void Initialize(WeaponConfig config)
 	{
 		currentAmmo = config.maxAmmo;
@@ -32,7 +32,7 @@ public class RangedWeapon : MonoBehaviour, IWeapon, IReloadable, IAimWeapon
 			}
 			else
 			{
-				Debug.Log("Out of ammo!");
+				ShowAmmoMessage(false);
 			}
 		}
 	}
@@ -46,6 +46,7 @@ public class RangedWeapon : MonoBehaviour, IWeapon, IReloadable, IAimWeapon
 	{
 		bool isReloadble = maxAmmo - currentAmmo > 0;
 		currentAmmo += amount;
+		ShowAmmoMessage(true);
 		return isReloadble;
 	}
 
@@ -68,4 +69,11 @@ public class RangedWeapon : MonoBehaviour, IWeapon, IReloadable, IAimWeapon
 		}
 	}
 
+	private void ShowAmmoMessage(bool reloaded)
+	{
+		if (reloaded) Debug.Log("Ammo reloaded");
+		if(isReloaded != reloaded && !reloaded)	Debug.Log("Out of ammo!");
+		isReloaded = reloaded;
+
+	}
 }

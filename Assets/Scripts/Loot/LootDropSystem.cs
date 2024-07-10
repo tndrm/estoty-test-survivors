@@ -18,7 +18,7 @@ public class LootDropSystem : MonoBehaviour
 		spawnLoot(experienceGem, position);
 		if (otherLoots.Count > 0)
 		{
-			LootItemConfig randomLootConfig = otherLoots[Random.Range(0, otherLoots.Count - 1)];
+			LootItemConfig randomLootConfig = otherLoots[Random.Range(0, otherLoots.Count)];
 			spawnLoot(randomLootConfig, position);
 		}
 
