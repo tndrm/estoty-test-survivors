@@ -8,15 +8,19 @@ public class PlayerHealth : MonoBehaviour
 
 	public event Action<int> OnHealthChanged;
 	public event Action OnPlayerDied;
+	private ServiceLocator<object> serviceLocator;
+
 
 
 	private void Awake()
 	{
-		ServiceLocator.Register(this);
+		serviceLocator = GameplayEntryPoint.ServiceLocator;
+
+		serviceLocator.Register(this);
 	}
 	private void Start()
 	{
-		GameplayEntryPoint gameEntryPoint = ServiceLocator.Get<GameplayEntryPoint>();
+		GameplayEntryPoint gameEntryPoint = serviceLocator.Get<GameplayEntryPoint>();
 		maxHealth = gameEntryPoint.currentLevelConfig.playerMaxHealth;
 		currentHealth = maxHealth;
 		OnHealthChanged?.Invoke(currentHealth);

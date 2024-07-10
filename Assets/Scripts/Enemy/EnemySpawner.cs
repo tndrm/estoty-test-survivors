@@ -15,7 +15,9 @@ public class EnemySpawner : MonoBehaviour
 	private void Start()
 	{
 		playerCamera = Camera.main;
-		GameplayEntryPoint gameEntryPoint = ServiceLocator.Get<GameplayEntryPoint>();
+		ServiceLocator<object> serviceLocator = GameplayEntryPoint.ServiceLocator;
+
+		GameplayEntryPoint gameEntryPoint = serviceLocator.Get<GameplayEntryPoint>();
 		spawnRate = gameEntryPoint.currentLevelConfig.enemySpawnRate;
 		enemySpawnIncreaseCoefficient = gameEntryPoint.currentLevelConfig.enemySpawnIncreaseCoefficient;
 		enemyTypes = gameEntryPoint.currentLevelConfig.enemies;

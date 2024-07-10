@@ -19,7 +19,10 @@ public class PlayerWeapon : MonoBehaviour
 
 	private void Start()
 	{
-		enemyFinder = ServiceLocator.Get<EnemyFinder>();
+		ServiceLocator<object> serviceLocator = GameplayEntryPoint.ServiceLocator;
+
+
+		enemyFinder = serviceLocator.Get<EnemyFinder>();
 		SetLeftWeapon();
 		SetRightWeapon();
 	}

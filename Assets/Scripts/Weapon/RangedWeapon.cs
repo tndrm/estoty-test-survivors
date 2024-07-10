@@ -45,6 +45,7 @@ public class RangedWeapon : MonoBehaviour, IWeapon, IReloadable, IAimWeapon
 	public bool Reload(int amount)
 	{
 		bool isReloadble = maxAmmo - currentAmmo > 0;
+		currentAmmo = Mathf.Min(currentAmmo + amount, maxAmmo);
 		currentAmmo += amount;
 		ShowAmmoMessage(true);
 		return isReloadble;

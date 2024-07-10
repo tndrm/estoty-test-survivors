@@ -11,7 +11,9 @@ public class LootDropSystem : MonoBehaviour
 
 	private void Awake()
 	{
-		ServiceLocator.Register(this);
+		ServiceLocator<object> serviceLocator = GameplayEntryPoint.ServiceLocator;
+
+		serviceLocator.Register(this);
 	}
 	public void DropLoots(Vector3 position)
 	{
@@ -28,10 +30,10 @@ public class LootDropSystem : MonoBehaviour
 	{
 		LootItem lootInstance = Instantiate(loot.lootPrefab, position, Quaternion.identity, transform).GetComponent<LootItem>();
 		lootInstance.Initialize(loot);
-		ShowDropLootAnomation(lootInstance);
+		ShowDropLootAnimation(lootInstance);
 	}
 
-	private void ShowDropLootAnomation(LootItem lootItem)
+	private void ShowDropLootAnimation(LootItem lootItem)
 	{
 		Vector2 randomDirection = Random.insideUnitCircle.normalized * spawnRadius;
 

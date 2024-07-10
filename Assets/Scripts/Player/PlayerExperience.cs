@@ -9,16 +9,19 @@ public class PlayerExperience : MonoBehaviour
 	public event Action<int> OnExperienceChanged;
 	public event Action OnExpirienceFull;
 
+	private ServiceLocator<object> serviceLocator;
+
 
 	private void Awake()
 	{
+		serviceLocator = GameplayEntryPoint.ServiceLocator;
 
-		ServiceLocator.Register(this);
+		serviceLocator.Register(this);
 	}
 
 	private void Start()
 	{
-		GameplayEntryPoint gameEntryPoint = ServiceLocator.Get<GameplayEntryPoint>();
+		GameplayEntryPoint gameEntryPoint = serviceLocator.Get<GameplayEntryPoint>();
 		experienceToNextLevel = gameEntryPoint.currentLevelConfig.playerMaxExpirience;
 		OnExperienceChanged?.Invoke(currentExperience);
 	}

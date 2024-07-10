@@ -14,16 +14,26 @@ public class GameplayEntryPoint : MonoBehaviour
 	[SerializeField] GameObject gameObjectSpawnerPrefab;
 	[SerializeField] GameObject gameplayUIprefab;
 
+	public static ServiceLocator<object> ServiceLocator { get; private set; }
+
+
 	public LevelConfig currentLevelConfig { get; private set; }
 
+	private void Awake()
+	{
+		ServiceLocator = new ServiceLocator<object>();
+		ServiceLocator.Register(this);
+	}
 	public void Run()
 	{
+		ServiceLocator.Clear();
+		ServiceLocator.Register(this);
+
 		if (levels != null && levels.Length > 0 && levelIndex >= 0 && levelIndex < levels.Length)
 		{
 			Debug.Log("Gameplay scene Loaded");
 			currentLevelConfig = levels[levelIndex];
 			LoadLevel(currentLevelConfig);
-			ServiceLocator.Register(this);
 		}
 		else
 		{

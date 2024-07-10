@@ -9,7 +9,8 @@ public class EnemyDeathCounter : MonoBehaviour
 
 	private void Awake()
 	{
-		ServiceLocator.Register(this);
+		ServiceLocator<object> serviceLocator = GameplayEntryPoint.ServiceLocator;
+		serviceLocator.Register(this);
 	}
 	private void OnEnable()
 	{

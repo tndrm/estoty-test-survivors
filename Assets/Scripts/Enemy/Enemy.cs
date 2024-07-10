@@ -17,8 +17,10 @@ public class Enemy : MonoBehaviour
 
 	private void Start()
 	{
-		player = ServiceLocator.Get<PlayerMoveController>().transform;
-		lootDropSystem = ServiceLocator.Get<LootDropSystem>();
+		ServiceLocator<object> serviceLocator = GameplayEntryPoint.ServiceLocator;
+
+		player = serviceLocator.Get<PlayerMoveController>().transform;
+		lootDropSystem = serviceLocator.Get<LootDropSystem>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		animator = GetComponent<Animator>();
 

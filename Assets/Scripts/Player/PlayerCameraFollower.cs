@@ -18,6 +18,8 @@ public class PlayerCameraFollower : MonoBehaviour
 	private void SetPlayer(PlayerMoveController player)
 	{
 		_player = player.transform;
-		ServiceLocator.Register(this);
+		ServiceLocator<object> serviceLocator = GameplayEntryPoint.ServiceLocator;
+
+		serviceLocator.Register(this);
 	}
 }

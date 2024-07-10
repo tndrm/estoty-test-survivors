@@ -17,11 +17,14 @@ public class UIController : MonoBehaviour
 
 	private void Start()
 	{
+
+		ServiceLocator<object> serviceLocator = GameplayEntryPoint.ServiceLocator;
+
 		winScreen.SetActive(false);
 		loseScreen.SetActive(false);
-		playerExperience = ServiceLocator.Get<PlayerExperience>();
-		playerHealth = ServiceLocator.Get<PlayerHealth>();
-		enemyDeathCounter = ServiceLocator.Get<EnemyDeathCounter>();
+		playerExperience = serviceLocator.Get<PlayerExperience>();
+		playerHealth = serviceLocator.Get<PlayerHealth>();
+		enemyDeathCounter = serviceLocator.Get<EnemyDeathCounter>();
 		healthSlider.maxValue = playerHealth.maxHealth;
 		UpdateHealthUI(playerHealth.currentHealth);
 
@@ -35,7 +38,7 @@ public class UIController : MonoBehaviour
 
 		enemyDeathCounter.OnEnemyDeathCountChanged += UpdateDeathCounterUI;
 
-		gameplayEntryPoint = ServiceLocator.Get<GameplayEntryPoint>();
+		gameplayEntryPoint = serviceLocator.Get<GameplayEntryPoint>();
 
 	}
 

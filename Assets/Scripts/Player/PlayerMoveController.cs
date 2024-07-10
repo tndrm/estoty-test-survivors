@@ -1,3 +1,4 @@
+using DG.Tweening.Core.Easing;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -12,18 +13,22 @@ public class PlayerMoveController : MonoBehaviour
 	private Animator animator;
 	private SpriteRenderer spriteRenderer;
 	private Rigidbody2D rb;
+	private ServiceLocator<object> serviceLocator;
+
 
 
 	private void Awake()
 	{
-		ServiceLocator.Register(this);
+		serviceLocator = GameplayEntryPoint.ServiceLocator;
+
+		serviceLocator.Register(this);
 		rb = GetComponent<Rigidbody2D>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		animator = GetComponent<Animator>();
 	}
 	private void Start()
 	{
-		GameplayEntryPoint gameEntryPoint = ServiceLocator.Get<GameplayEntryPoint>();
+		GameplayEntryPoint gameEntryPoint = serviceLocator.Get<GameplayEntryPoint>();
 		moveSpeed = gameEntryPoint.currentLevelConfig.playerSpeed;
 	}
 

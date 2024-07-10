@@ -7,7 +7,8 @@ public class EnemyFinder : MonoBehaviour
 
 	private void Awake()
 	{
-		ServiceLocator.Register(this);
+		ServiceLocator<object> serviceLocator = GameplayEntryPoint.ServiceLocator;
+		serviceLocator.Register(this);
 	}
 	public Transform FindClosestEnemy()
 	{
