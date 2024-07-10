@@ -15,6 +15,8 @@ public class EnemyDieState : IEnemyState
 		}
 		enemy.gameObject.layer = LayerMask.NameToLayer("Default");
 		OnEnemyDeath?.Invoke();
+		enemy.spriteRenderer.sortingLayerName = "Default";
+
 		enemy.lootDropSystem.DropLoots(enemy.transform.position);
 		enemy.spriteRenderer.material
 			.DOFade(0, enemy.enemyFadeDuration)
@@ -22,6 +24,7 @@ public class EnemyDieState : IEnemyState
 			{
 				if (enemy != null) GameObject.Destroy(enemy.gameObject);
 			});
+
 
 	}
 

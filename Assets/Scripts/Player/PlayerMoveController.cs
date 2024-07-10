@@ -1,4 +1,3 @@
-using DG.Tweening.Core.Easing;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -14,8 +13,6 @@ public class PlayerMoveController : MonoBehaviour
 	private SpriteRenderer spriteRenderer;
 	private Rigidbody2D rb;
 	private ServiceLocator<object> serviceLocator;
-
-
 
 	private void Awake()
 	{
@@ -49,7 +46,6 @@ public class PlayerMoveController : MonoBehaviour
 		{
 			spriteRenderer.flipX = moveDirection.x < 0;
 		}
-
 		rb.velocity = moveDirection * moveSpeed;
 	}
 }

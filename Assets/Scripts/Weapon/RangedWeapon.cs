@@ -39,7 +39,7 @@ public class RangedWeapon : MonoBehaviour, IWeapon, IReloadable, IAimWeapon
 
 	private void Shoot()
 	{
-		Instantiate(bulletPrefab, firePoint.position, transform.rotation, transform);
+		Instantiate(bulletPrefab, firePoint.position, transform.rotation);
 	}
 
 	public bool Reload(int amount)

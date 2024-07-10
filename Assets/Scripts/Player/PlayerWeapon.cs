@@ -17,6 +17,13 @@ public class PlayerWeapon : MonoBehaviour
 	private IAimWeapon leftAutoTargetWeapon;
 	private IAimWeapon rightAutoTargetWeapon;
 
+	private SpriteRenderer leftWeaponSpriteRenderer;
+	private SpriteRenderer rightWeaponSpriteRenderer;
+
+	private Vector3 previousPosition;
+	private SpriteRenderer playerSpriteRenderer;
+
+
 	private void Start()
 	{
 		ServiceLocator<object> serviceLocator = GameplayEntryPoint.ServiceLocator;
@@ -25,6 +32,7 @@ public class PlayerWeapon : MonoBehaviour
 		enemyFinder = serviceLocator.Get<EnemyFinder>();
 		SetLeftWeapon();
 		SetRightWeapon();
+		playerSpriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
 	private void SetLeftWeapon()
@@ -34,6 +42,7 @@ public class PlayerWeapon : MonoBehaviour
 		leftWeapon.Initialize(leftWeaponConfig);
 		leftReloadable = leftWeaponObject.GetComponent<IReloadable>();
 		leftAutoTargetWeapon = leftWeaponObject.GetComponent<IAimWeapon>();
+		leftWeaponSpriteRenderer = leftWeaponObject.GetComponent<SpriteRenderer>();
 	}
 	private void SetRightWeapon()
 	{
@@ -42,6 +51,7 @@ public class PlayerWeapon : MonoBehaviour
 		rightWeapon.Initialize(rightWeaponConfig);
 		rightReloadable = rightWeaponObject.GetComponent<IReloadable>();
 		rightAutoTargetWeapon = rightWeaponObject.GetComponent<IAimWeapon>();
+		rightWeaponSpriteRenderer = rightWeaponObject.GetComponent<SpriteRenderer>();
 	}
 
 	private void Update()
@@ -51,9 +61,35 @@ public class PlayerWeapon : MonoBehaviour
 		rightAutoTargetWeapon?.AimAndAttack(target);
 	}
 
+	private void LateUpdate()
+	{
+				ChangeWeaponSpriteOrder();
+	}
+
 	public void Reload(int amount)
 	{
 		bool? isReloaded = leftReloadable?.Reload(amount);
 		if (isReloaded == true) rightReloadable?.Reload(amount);
+	}
+
+	private void ChangeWeaponSpriteOrder()
+	{
+		Vector3 currentPosition = transform.position;
+		Vector3 direction = currentPosition - previousPosition;
+		int playerSortOrder = playerSpriteRenderer.sortingOrder;
+		if (direction.x > 0)
+		{
+			// Moving right
+			leftWeaponSpriteRenderer.sortingOrder = playerSortOrder - 1;
+			rightWeaponSpriteRenderer.sortingOrder = playerSortOrder + 1;
+		}
+		else if (direction.x < 0)
+		{
+			// Moving left
+			leftWeaponSpriteRenderer.sortingOrder = playerSortOrder + 1;
+			rightWeaponSpriteRenderer.sortingOrder = playerSortOrder - 1;
+		}
+
+		previousPosition = currentPosition;
 	}
 }

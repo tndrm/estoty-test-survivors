@@ -9,6 +9,7 @@ public class PlayerHealth : MonoBehaviour
 	public event Action<int> OnHealthChanged;
 	public event Action OnPlayerDied;
 	private ServiceLocator<object> serviceLocator;
+	private bool isDied = false;
 
 
 
@@ -34,6 +35,7 @@ public class PlayerHealth : MonoBehaviour
 
 	public void TakeDamage(int amount)
 	{
+		if (isDied) return;
 		currentHealth -= amount;
 		if (currentHealth <= 0)
 		{
@@ -44,6 +46,7 @@ public class PlayerHealth : MonoBehaviour
 
 	private void Die()
 	{
+		isDied = true;
 		OnPlayerDied?.Invoke();
 	}
 }
